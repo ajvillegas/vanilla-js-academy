@@ -49,7 +49,7 @@
 
             <div>
                 <label for="show-password">
-                    <input type="checkbox" name="show-password" id="show-password">
+                    <input type="checkbox" name="show-password" id="show-password" data-pw-toggle="#password">
                     Show password
                 </label>
             </div>
@@ -75,7 +75,7 @@
 
             <div>
                 <label for="show-passwords">
-                    <input type="checkbox" name="show-passwords" id="show-passwords">
+                    <input type="checkbox" name="show-passwords" id="show-passwords" data-pw-toggle="#current-password, #new-password">
                     Show passwords
                 </label>
             </div>
@@ -86,30 +86,25 @@
         </form>
 
         <script>
-            // Get the first form password input field.
-            const passwordInput = document.querySelector('#password');
-
-            // Get second form password input fields.
-            const passwordInputs = document.querySelectorAll('input[type="password"]:not(#password)');
-
-            // Toggle password input field type.
-            const toggleVisibility = function (input) {
-                if (event.target.checked) {
-                    input.type = 'text';
-                } else {
-                    input.type = 'password';
-                }
-            };
-
             // Handle click events with event delegation.
             document.addEventListener('click', function (event) {
-                if (passwordInput && event.target.matches('#show-password')) {
-                    toggleVisibility(passwordInput);
+                // Bail if event target is not a password toggle input.
+                if (!event.target.matches('[data-pw-toggle]')) {
+                    return;
                 }
 
-                if (passwordInputs && event.target.matches('#show-passwords')) {
-                    for (let input of passwordInputs) {
-                        toggleVisibility(input);
+                // Get the password field IDs from the data-pw-toggle attribute.
+                let selector = event.target.getAttribute('data-pw-toggle');
+
+                // Select all password input fields using the IDs from the data-pw-toggle attribute.
+                let passwords = document.querySelectorAll(selector);
+
+                // Loop through each password field.
+                for (let password of passwords) {
+                    if (event.target.checked) {
+                        password.type = 'text';
+                    } else {
+                        password.type = 'password';
                     }
                 }
             });
