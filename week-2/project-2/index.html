@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Word & Character Count</title>
+
+        <style>
+            label,
+            textarea {
+                display: block;
+            }
+
+        </style>
+    </head>
+
+    <body>
+        <h1>Word & Character Count</h1>
+
+        <label for="text">Enter your text below</label>
+        <textarea id="text" rows="6" cols="50"></textarea>
+
+        <p>You've written <strong><span id="word-count">0</span> words</strong> and <strong><span id="character-count">0</span> characters</strong>.</p>
+
+        <script>
+            // Get the textarea input field.
+            const textInput = document.querySelector('#text');
+
+            // Get the word and character count elements.
+            const wordCount = document.querySelector('#word-count');
+            const charCount = document.querySelector('#character-count');
+
+            // Handle the input event on textarea.
+            textInput.addEventListener('input', function (event) {
+                // Get the word count.
+                // We use a regex instead of split(' ')
+                // to account for both spaces and line breaks.
+                const words = textInput.value.split(/[\s]+/g).filter(function (item) {
+                    // Create a new array with filter()
+                    // of only words that have a length
+                    // property of > 0. This prevents
+                    // counting empty spaces and new lines
+                    // as words.
+                    return item.length;
+                });
+
+                // Display the word count.
+                wordCount.innerText = words.length;
+
+                // Display the character count.
+                charCount.innerText = textInput.value.length;
+            });
+        </script>
+    </body>
+
+</html>
