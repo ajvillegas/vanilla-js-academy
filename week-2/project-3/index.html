@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Word & Character Count with ARIA</title>
+
+        <style>
+            label,
+            textarea {
+                display: block;
+            }
+
+        </style>
+    </head>
+
+    <body>
+        <h1>Word & Character Count with ARIA</h1>
+
+        <label for="text">Enter your text below</label>
+        <textarea id="text" rows="6" cols="50"></textarea>
+
+        <!-- Add ARIA labels to announce the live changes. -->
+        <p id="count" aria-live="polite">You've written 0 words and 0 characters.</p>
+
+        <script>
+            // Get the textarea input field.
+            const textInput = document.querySelector('#text');
+
+            // Get the display count element.
+            const count = document.querySelector('#count');
+
+            // Handle the input event on textarea.
+            textInput.addEventListener('input', function (event) {
+                // Get the word count.
+                // We use a regex instead of split(' ')
+                // to account for both spaces and line breaks.
+                const words = textInput.value.split(/[\s]+/g).filter(function (item) {
+                    // Create a new array with filter()
+                    // of only words that have a length
+                    // property of > 0. This prevents
+                    // counting empty spaces and new lines
+                    // as words.
+                    return item.length;
+                });
+
+                // Display the word and character count.
+                // We are replacing the whole paragraph to prevent the
+                // screen reader from reading the original paragraph
+                // followed by the updated characters (assuming you were
+                // using aria-atomic="true" as well).
+                // (e.g, "You've written  words and  characters. 4 19").
+                count.innerText = `You've written ${words.length} words and ${textInput.value.length} characters.`;
+            });
+        </script>
+    </body>
+
+</html>
